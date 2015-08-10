@@ -1,0 +1,9 @@
+<h3>Estadísticas Quiz 2015</h3>
+<br>
+<ul>
+  <li>Preguntas: <%= statistics.quizes %></li>
+  <li>Comentarios totales: <%= statistics.comments %></li>
+  <li>Nº medio de comentarios por pregunta: <%= statistics.quizes? (statistics.comments / statistics.quizes).toFixed(2):0 %></li>
+  <li>Preguntas sin comentarios: <%= statistics.quizes - statistics.quizesWithComments %></li>
+  <li>Preguntas con comentarios: <%= statistics.quizesWithComments %></li>
+</ul>
