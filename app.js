@@ -29,7 +29,7 @@ app.use(session());
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Helpers deinámicos
+//Helpers dinámicos
 app.use(function(req, res, next) {
   //guardar path en session.redir para despues de login
   if (!req.path.match(/\/login|\/logout/)) {
@@ -37,6 +37,18 @@ app.use(function(req, res, next) {
   }
   //Hacer visible req.session en las vistas
   res.locals.session = req.session;
+  // Desconectar auto-logout de sesion por mas de dos minutos
+  if (req.session.horaEntrada){
+    var ultimaPeticion = new Date().getTime();
+    var tmpPasado = ultimaPeticion - req.session.horaEntrada;
+    if (tmpPasado > (2 * 60 * 1000)) {
+        delete req.session.horaEntrada;
+        req.session.autoLogout = true;
+        res.redirect("/logout");
+    } else {
+      req.session.horaEntrada = ultimaPeticion;
+    }
+  };
   next();
 });
 
